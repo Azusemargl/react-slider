@@ -23,9 +23,9 @@ const App = () => {
       loop={true}
       navs={true}
       pags={true}
-      auto={false}
-      stopMouseHover={true}
-      delay={3}
+      auto={true}
+      stopMouseHover={false}
+      delay={1}
     />
   )
 }

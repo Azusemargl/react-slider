@@ -3,12 +3,11 @@ import classnames from 'classnames'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import './slider.scss'
 
-// TODO:
-// stopMouseHover - если навести мышкой на слайд, он не переключается, как только мышку убрали, снова пошло. Работает только когда auto равен true. true или false
-
 const Slider = ({ slides, loop, navs, pags, auto, delay }) => {
    const [currentSlide, setCurrentSlide] = React.useState(0) // Current slide value
+   const [autoplay, setAutoplay] = React.useState() // Autoplay value
    const time = delay * 1000 || 5000
+
    // Left move
    const onMoveLeft = (side) => {
       if (side <= 0) {
@@ -29,15 +28,22 @@ const Slider = ({ slides, loop, navs, pags, auto, delay }) => {
 
    // Loop moving with delay
    React.useEffect(() => {
-      if (auto) {
+      if (autoplay) {
          const timer = setInterval(() => onMoveRight(currentSlide), time)
          return () => clearInterval(timer)
       }
-   }, [currentSlide, onMoveRight, auto, time])
+   }, [currentSlide, onMoveRight, autoplay, time])
+
+   React.useEffect(() => setAutoplay(auto), [auto]) // Set autoplay after mouse entering and leaving
 
    return (
       <div className="slider">
-         <div className="slider__container" style={{ transform: `translateX(-${100 * currentSlide}%)` }}>
+         <div
+            className="slider__container"
+            onMouseEnter={e => setAutoplay(false)}
+            onMouseLeave={e => setAutoplay(true)}
+            style={{transform: `translateX(-${100 * currentSlide}%)` }}
+         >
             {slides.map(slide => (
                <div className="slider__item" key={`slide-${slide.text}`}>
                   <img src={slide.img} alt="" />
