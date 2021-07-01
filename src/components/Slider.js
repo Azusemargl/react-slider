@@ -1,14 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
+import classnames from 'classnames'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import './slider.scss'
 
-// Функционал:
-// кнопки далее и назад
-// подпись текста к каждому слайду
-// вывод номера и максимального количества (1/3,2/3,/3/3)
-// пагинация (при клике - переключается на нужный слайд)
-// Дополнительные параметры:
-
+// TODO:
 // loop - возможность листать слайдер по кругу (например когда на 3 слайде нажимаем далее - переходим на 1). true или false
 // navs - Вывод стрелочек или их отключение. true или false
 // pags - вывод пагинации или отключение. true или false
@@ -17,15 +12,18 @@ import './slider.scss'
 // delay - время в секундах на показ слайда, если auto true
 
 const Slider = ({ slides }) => {
-   const [currentSlide, setCurrentSlide] = React.useState(0)
+   const [currentSlide, setCurrentSlide] = React.useState(0) // Current slide value
 
-   const onMoveLeft = () => {
-      console.log(currentSlide)
-      setCurrentSlide(currentSlide - 1)
+   // Left move
+   const onMoveLeft = (side) => {
+      if (side <= 0) setCurrentSlide(0)
+      else setCurrentSlide(side - 1)
    }
+
+   // Right move
    const onMoveRight = (side) => {
-      console.log(currentSlide)
-      setCurrentSlide(currentSlide + 1)
+      if (side >= slides.length - 1) setCurrentSlide(slides.length - 1)
+      else setCurrentSlide(side + 1)
    }
 
    return (
@@ -39,12 +37,32 @@ const Slider = ({ slides }) => {
             ))}
          </div>
 
-         <button className="move prev" onClick={e => onMoveLeft()}><LeftOutlined /></button>
-         <button className="move next" onClick={e => onMoveRight()}><RightOutlined /></button>
+         <div className="pages">
+            <span>{currentSlide + 1}</span>
+            <span>/</span>
+            <span>{slides.length}</span>
+         </div>
+
+         <button
+            className="move prev" 
+            disabled={currentSlide === 0}
+            onClick={e => onMoveLeft(currentSlide)}>
+            <LeftOutlined />
+         </button>
+         <button
+            className="move next"
+            disabled={currentSlide === slides.length - 1}
+            onClick={e => onMoveRight(currentSlide)}>
+            <RightOutlined />
+         </button>
 
          <div className="dots">
-            {slides.map(slide => (
-               <button className="dots__item" key={`dot-${slide.text}`}></button>
+            {slides.map((slide, index) => (
+               <button
+                  className={classnames("dots__item", {"active": index === currentSlide})}
+                  onClick={e => setCurrentSlide(index)}
+                  key={`dot-${slide.text}`}>
+               </button>
             ))}
          </div>
       </div>
