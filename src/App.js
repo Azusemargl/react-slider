@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import Slider from './components/Slider'
 
-function App() {
+const App = () => {
+  const slides = [
+    {
+      img: 'https://www.w3schools.com/howto/img_nature_wide.jpg',
+      text: 'Caption Text 1'
+    },
+    {
+      img: 'https://www.w3schools.com/howto/img_snow_wide.jpg',
+      text: 'Caption Text 2'
+    },
+    {
+      img: 'https://www.w3schools.com/howto/img_mountains_wide.jpg',
+      text: 'Caption Text 3'
+    },
+  ]
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Slider
+      slides={slides}
+      loop={true}
+      navs={true}
+      pags={true}
+      auto={true}
+      stopMouseHover={true}
+      delay={3}
+    />
+  )
 }
 
 export default App;
