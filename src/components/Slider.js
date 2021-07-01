@@ -4,13 +4,11 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import './slider.scss'
 
 // TODO:
-// auto - слайдер сам переключается, если delay не указан, раз в 5 сек. А
 // stopMouseHover - если навести мышкой на слайд, он не переключается, как только мышку убрали, снова пошло. Работает только когда auto равен true. true или false
-// delay - время в секундах на показ слайда, если auto true
 
-const Slider = ({ slides, loop, navs, pags, auto }) => {
+const Slider = ({ slides, loop, navs, pags, auto, delay }) => {
    const [currentSlide, setCurrentSlide] = React.useState(0) // Current slide value
-
+   const time = delay * 1000 || 5000
    // Left move
    const onMoveLeft = (side) => {
       if (side <= 0) {
@@ -32,10 +30,10 @@ const Slider = ({ slides, loop, navs, pags, auto }) => {
    // Loop moving with delay
    React.useEffect(() => {
       if (auto) {
-         const timer = setInterval(() => onMoveRight(currentSlide), 1000)
+         const timer = setInterval(() => onMoveRight(currentSlide), time)
          return () => clearInterval(timer)
       }
-   }, [currentSlide, onMoveRight, auto])
+   }, [currentSlide, onMoveRight, auto, time])
 
    return (
       <div className="slider">
