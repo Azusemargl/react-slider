@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import './slider.scss'
 
 // Функционал:
@@ -16,16 +17,36 @@ import './slider.scss'
 // delay - время в секундах на показ слайда, если auto true
 
 const Slider = ({ slides }) => {
+   const [currentSlide, setCurrentSlide] = React.useState(0)
+
+   const onMoveLeft = () => {
+      console.log(currentSlide)
+      setCurrentSlide(currentSlide - 1)
+   }
+   const onMoveRight = (side) => {
+      console.log(currentSlide)
+      setCurrentSlide(currentSlide + 1)
+   }
+
    return (
       <div className="slider">
-         {slides.map(slide => (
-            <div className="slider__item" key={`slide-${slide.text}`}>
-               <img src={slide.img} alt="" />
-               <p>{slide.text}</p>
-            </div>
-         ))}
-         <button className="move"></button>
-         <button className="move"></button>
+         <div className="slider__container" style={{ transform: `translateX(-${100 * currentSlide}%)` }}>
+            {slides.map(slide => (
+               <div className="slider__item" key={`slide-${slide.text}`}>
+                  <img src={slide.img} alt="" />
+                  <p>{slide.text}</p>
+               </div>
+            ))}
+         </div>
+
+         <button className="move prev" onClick={e => onMoveLeft()}><LeftOutlined /></button>
+         <button className="move next" onClick={e => onMoveRight()}><RightOutlined /></button>
+
+         <div className="dots">
+            {slides.map(slide => (
+               <button className="dots__item" key={`dot-${slide.text}`}></button>
+            ))}
+         </div>
       </div>
    )
 }
