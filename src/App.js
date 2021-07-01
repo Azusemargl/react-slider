@@ -23,11 +23,11 @@ const App = () => {
       loop={true}
       navs={true}
       pags={true}
-      auto={true}
+      auto={false}
       stopMouseHover={true}
       delay={3}
     />
   )
 }
 
-export default App;
+export default App
